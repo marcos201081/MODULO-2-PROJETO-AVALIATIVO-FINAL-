@@ -1,16 +1,16 @@
-//---DECLARAÇÃO DE BIBLIOTECAS----------------------------------------------------------------- 
+//---DECLARAÇÃO DE BIBLIOTECAS-----------------------------------------------------------------
 #include <ArduinoJson.h>
 #include <EspMQTTClient.h>
 #include <DHT.h>
-  
+
 
 //---CRIAR VARIAVEIS DO MODULO DE ALARME-----------------------------------------------------
 
 int sensor = 13;
 String alarme;
-int buzzer= 12;
+int buzzer = 12;
 
-//---VARIAVEL --------------------------------------------------------------------------------- 
+//---VARIAVEL ---------------------------------------------------------------------------------
 int lampada = 15;
 
 //---DECLARAÇÃO DO DHT11 , CRIAR OBJETO DHT E VARIAVEIS -----------------------------------------
@@ -24,7 +24,7 @@ float umidade;
 char payload[100];
 char temperaturaJson [100];
 char umidadeJson     [100];
-char alarmeJson      [100];         
+char alarmeJson      [100];
 
 //------------geração do objeto EspMQTTClient------------------------
 EspMQTTClient Client ("Wokwi-GUEST", "", "mqtt.tago.io", "Default", "9609700e-46a9-4dd5-9876-019c78433805", "Esp32", 1883);
@@ -53,13 +53,13 @@ void setup() {
   Serial.begin(115200);
 
   dht.begin();
-  
-   pinMode(lampada, OUTPUT);
-    pinMode(buzzer, OUTPUT);
-   pinMode(sensor,INPUT );
-   
+
+  pinMode(lampada, OUTPUT);
+  pinMode(buzzer, OUTPUT);
+  pinMode(sensor, INPUT );
+
 }
-void loop(){
+void loop() {
   Temperatura();
   Alarme() ;
 
@@ -93,28 +93,28 @@ void Temperatura()
   Client.publish("info/temperaturaJson", temperaturaJson);
   Client.publish("info/umidadeJson", umidadeJson);
 
-  
+
 }
- void Alarme(){
+void Alarme() {
 
- if(digitalRead(sensor)== LOW) {
- digitalWrite(buzzer, HIGH);
- Serial.println("ATENÇÃO! CASA INVADIDA");
- 
- alarme = "ATENÇÃO! CASA INVADIDA";
- }
- else{
-  digitalWrite(buzzer, LOW);
-  Serial.println("ESTÁ TUDO DENTRO DA NORMALIDADE");
-  alarme = "ESTÁ TUDO DENTRO DA NORMALIDADE";
- }
+  if (digitalRead(sensor) == LOW) {
+    digitalWrite(buzzer, HIGH);
+    Serial.println("ATENÇÃO! CASA INVADIDA");
 
-StaticJsonDocument<300> dadosalarme;
+    alarme = "ATENÇÃO! CASA INVADIDA";
+  }
+  else {
+    digitalWrite(buzzer, LOW);
+    Serial.println("ESTÁ TUDO DENTRO DA NORMALIDADE");
+    alarme = "ESTÁ TUDO DENTRO DA NORMALIDADE";
+  }
 
-dadosalarme["variable"] = "dados_do_alarme";
-dadosalarme["value"]    = alarme;
+  StaticJsonDocument<300> dadosalarme;
 
-serializeJson(dadosalarme, alarmeJson);
+  dadosalarme["variable"] = "dados_do_alarme";
+  dadosalarme["value"]    = alarme;
 
-Client.publish("info/alarmeJson", alarmeJson);
+  serializeJson(dadosalarme, alarmeJson);
+
+  Client.publish("info/alarmeJson", alarmeJson);
 }
