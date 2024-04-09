@@ -14,7 +14,7 @@ int buzzer = 12;
 int lampada = 15;
 
 //---DECLARAÇÃO DO DHT11 , CRIAR OBJETO DHT E VARIAVEIS -----------------------------------------
-#define  DHTTYPE DHT22
+#define  DHTTYPE DHT11
 int pinDHT = 5;
 DHT dht (pinDHT, DHTTYPE);
 float temperatura;
