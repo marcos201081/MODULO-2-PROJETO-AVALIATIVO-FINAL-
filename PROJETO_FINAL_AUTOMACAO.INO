@@ -27,7 +27,7 @@ char umidadeJson     [100];
 char alarmeJson      [100];
 
 //------------geração do objeto EspMQTTClient------------------------
-EspMQTTClient Client ("Wokwi-GUEST", "", "mqtt.tago.io", "Default", "9609700e-46a9-4dd5-9876-019c78433805", "Esp32", 1883);
+EspMQTTClient Client ("Içara Mais Tec_2G", "Espaco_4.0", "mqtt.tago.io", "Default", "9609700e-46a9-4dd5-9876-019c78433805", "Esp32", 1883);
 
 void onConnectionEstablished() {
   Serial.println("conectado");
